@@ -92,6 +92,10 @@ describe "test general" {
 		assert.equals(miercoles,nike.pedidoMasCaro())
 	}
 	
+	test "sucursales que vendieron todos los talles"{
+		assert.that(true)
+	}
+	
 
 }
 
