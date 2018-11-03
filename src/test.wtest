@@ -1,0 +1,97 @@
+import remeras.*
+import empresa.*
+
+describe "test general" {
+
+	const blanco = new Colores()
+	const negro = new Colores()
+	const gris = new Colores()
+	const verde = new Colores()
+	const azul = new Colores()
+	const remA1 = new RemerasLisas(talle = 40, colorDeRemera = gris, coloresBasico = [ blanco, negro, gris ])
+	const remA2 = new RemerasLisas(talle = 42, colorDeRemera = gris, coloresBasico = [ blanco, negro, gris ])
+	const remA3 = new RemerasLisas(talle = 40, colorDeRemera = azul, coloresBasico = [ blanco, negro, gris ])
+	const remA4 = new RemerasLisas(talle = 42, colorDeRemera = verde, coloresBasico = [ blanco, negro, gris ])
+	const remB1 = new RemeraBordada(talle = 44, colorDeRemera = blanco, cantColores = 1, coloresBasico = [ blanco, negro, gris ])
+	const remB2 = new RemeraBordada(talle = 42, colorDeRemera = gris, cantColores = 4, coloresBasico = [ blanco, negro, gris ])
+	const remS1 = new RemeraSubliminada(talle = 42, colorDeRemera = blanco, coloresBasico = [ blanco, negro, gris ], alto = 10, ancho = 15, precioDerechoDeAutor = 100, marcaComercialConConvenio = true)
+	const remS2 = new RemeraSubliminada(talle = 42, colorDeRemera = blanco, coloresBasico = [ blanco, negro, gris ], alto = 10, ancho = 15, precioDerechoDeAutor = 100)
+	const flores = new Sucursal(cantidadMinimaDeDescuento=10)
+	const avellaneda = new Sucursal(cantidadMinimaDeDescuento=3)
+	const devoto = new Sucursal(cantidadMinimaDeDescuento=2)
+	const munro = new Sucursal(cantidadMinimaDeDescuento= 30)
+	const lunes = new Pedido(tipoDeRemera= remA2,cantidadDeRemera=5,sucursal=flores)
+	const martes = new Pedido(tipoDeRemera= remA2,cantidadDeRemera=5,sucursal=avellaneda)
+	const miercoles = new Pedido(tipoDeRemera= remS1,cantidadDeRemera=4,sucursal=flores)
+	const jueves = new Pedido(tipoDeRemera= remS1,cantidadDeRemera=4,sucursal=avellaneda)
+	const viernes = new Pedido(tipoDeRemera= remS2,cantidadDeRemera=4,sucursal=avellaneda)
+	const nike = new Empresa(pedidos = [ lunes, martes, miercoles,jueves,viernes ], sucursales = [ flores, avellaneda, devoto, munro ])
+
+	test "Remera A1 gris, de talle 40 cuesta 80" {
+		assert.equals(80, remA1.costo())
+	}
+
+	test "Remera A2 gris, de talle 42 cuesta 100" {
+		assert.equals(100, remA2.costo())
+	}
+
+	test "Remera A3 azul, de talle 40 cuesta 88" {
+		assert.equals(88, remA3.costo())
+	}
+
+	test "Remera A4 verde, de talle 42 cuesta 110" {
+		assert.equals(110, remA4.costo())
+	}
+
+	test "Remera B1 blanca, de talle 42 cuesta 120" {
+		assert.equals(120, remB1.costo())
+	}
+
+	test "Remera B2 gris, de talle 42 cuesta 140" {
+		assert.equals(140, remB2.costo())
+	}
+
+	test "Remera S1 gris, de talle 42 cuesta 275" {
+		assert.equals(275, remS1.costo())
+	}
+	test "Se realiza un pedido del LUNES por 5 remeras lisas talle 42, cuesta 500 en flores. sin descuento"{
+		assert.equals(100,remA2.costo())
+		assert.equals(500,lunes.precio())
+		
+	}
+	test "Se realiza un pedido del MARTES por 5 remeras lisas talle 42, cuesta 450 en AVELLANEDA. Con descuento"{
+		assert.equals(100,remA2.costo())
+		assert.equals(450,martes.precio())
+	}
+	test "Se realiza un pedido del MIERCOLES por 4 remeras lisas talle 42, cuesta 110 en FLORES. Sin descuento"{
+		assert.equals(275,remS1.costo())
+		assert.equals(1100,miercoles.precio())
+	}
+	test "Se realiza un pedido del JUEVES por 4 remeras lisas talle 42, cuesta 880 en AVELLANEDA. Con descuento"{
+		assert.equals(275,remS1.costo())
+		assert.equals(880,jueves.precio())
+	}
+	test "Se realiza un pedido del VIERNES por 4 remeras lisas talle 42, cuesta 990 en AVELLANEDA, sin convenio. Con descuento"{
+		assert.equals(275,remS1.costo())
+		assert.equals(990,viernes.precio())
+	}
+	test "El total facturado de la empres NIKE es "{
+		assert.equals(3920, nike.totalFacturado())
+	}
+	test "El total facturado por la sucursal de FLORES es "{
+		assert.equals(1600, nike.totalFacturadoDe(flores))
+	}
+	//test "La sucursal que mas facturo es la de FLORES"{
+		//assert.equals(flores,nike.sucursalQueMasFacturo())
+	//}
+	test"los pedidos de remera de color Blanco son"{
+		assert.equals(3,nike.cuantosPedidoDe(blanco))
+		
+	}
+	test "El pedido mas caro de NIKE es el Miercoles"{
+		assert.equals(miercoles,nike.pedidoMasCaro())
+	}
+	
+
+}
+
